@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IoTConsumer.Models
+﻿namespace IoTConsumer.Models
 {
     public class Message
     {

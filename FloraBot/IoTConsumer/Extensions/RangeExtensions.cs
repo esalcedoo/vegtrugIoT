@@ -2,7 +2,7 @@
 
 namespace IoTConsumer.Extensions
 {
-    public static class RangeExtension
+    public static class RangeExtensions
     {
         public static bool Contains(this Range range, float value)
         {

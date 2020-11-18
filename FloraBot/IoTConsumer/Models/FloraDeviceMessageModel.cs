@@ -1,11 +1,12 @@
-﻿using System.Text.Json.Serialization;
+﻿using System;
+using System.Text.Json.Serialization;
 
 namespace IoTConsumer.Models
 {
-    class FloraMessageModel
+    public class FloraDeviceMessageModel
     {
         [JsonPropertyName("MI_ID")]
-        public string Id { get; set; }
+        public string DeviceId { get; set; }
 
         [JsonPropertyName("MI_BATTERY")]
         public int Battery { get; set; }
@@ -22,9 +23,11 @@ namespace IoTConsumer.Models
         [JsonPropertyName("MI_TEMPERATURE")]
         public float Temperature { get; set; }
 
+        public DateTime? Timestamp { get; set; }
+
         public override string ToString()
         {
-            return $"Id: {Id}, Battery: {Battery}, Conductivity: {Conductivity}, Light: {Light}, Moisture: {Moisture}, Temperature: {Temperature}";
+            return $"DeviceId: {DeviceId}, Battery: {Battery}, Conductivity: {Conductivity}, Light: {Light}, Moisture: {Moisture}, Temperature: {Temperature}";
         }
     }
 }

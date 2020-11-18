@@ -1,50 +1,55 @@
-﻿using IoTConsumer.Models;
-using System.Collections.Generic;
+﻿using IoTConsumer.Data;
+using IoTConsumer.Models;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace IoTConsumer.Services
 {
-    public interface IPlantService
+    public class PlantService
     {
-        public PlantModel FindById(string id);
-    }
+        private readonly FloraDBContext _context;
 
-    class LocalPlantService : IPlantService
-    {
-        private static readonly Dictionary<string, PlantModel> _plants = new Dictionary<string, PlantModel>
+        public PlantService(FloraDBContext context)
         {
-            { "C4:7C:8D:6B:3B:DC", new PlantModel( id: "C4:7C:8D:6B:3B:DC",
-                name: "Maranta",
-                conductivity: ConductivityRangesModel.MediumRange,
-                light: LightRangesModel.MediumRange,
-                moisture: MoistureRanges.MediumRange,
-                temperature: TemperatureRanges.HighRange)
-            },
-            { "80:EA:CA:88:F5:5D", new PlantModel( id: "80:EA:CA:88:F5:5D",
-                name: "Monstera",
-                conductivity: ConductivityRangesModel.MediumRange,
-                light: LightRangesModel.MediumRange,
-                moisture: MoistureRanges.MediumRange,
-                temperature: TemperatureRanges.HighRange)
-            },
-        };
+            _context = context;
+        }
 
-        public PlantModel FindById(string id)
+        public async Task ProcessFloraDeviceMessage(FloraDeviceMessageModel model)
         {
-            return _plants.ContainsKey(id) ? _plants[id] : null;
+            var floraDevice = await _context.FloraDevices.FindAsync(model.DeviceId);
+
+            if(floraDevice?.PlantId == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            floraDevice.Battery = model.Battery;
+
+            var entry = new EntryEntity
+            {
+                Conductivity = model.Conductivity,
+                Light = model.Light,
+                Moisture = model.Moisture,
+                Temperature = model.Temperature,
+                Timestamp = model.Timestamp,
+                PlantId = floraDevice.PlantId.Value
+            };
+
+            _context.Entries.Add(entry);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<PlantModel> FindPlantByDeviceId(string id)
+        {
+            var plantEntity = await _context.FloraDevices
+                                    .Where(device => device.Id == id)
+                                    .Select(device => device.Plant)
+                                    .FirstOrDefaultAsync();
+
+            return plantEntity.ToModel();
         }
     }
-
-    //class DatabasePlanService : IPlantService
-    //{
-    //    private readonly DbContext _context;
-
-    //    public DatabasePlanService(DbContext context)
-    //    {
-    //        _context = context;
-    //    }
-    //    public PlantModel FindById(string id)
-    //    {
-    //        return _context.Plants.FindById(id);
-    //    }
-    //}
 }

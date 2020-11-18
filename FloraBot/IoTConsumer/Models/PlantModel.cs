@@ -1,15 +1,14 @@
 ﻿using IoTConsumer.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IoTConsumer.Models
 {
     public class PlantModel
     {
-        public PlantModel(string id, string name, Range conductivity, Range light, Range moisture, Range temperature)
+        protected PlantModel() { }
+
+        public PlantModel(string name, Range conductivity, Range light, Range moisture, Range temperature)
         {
-            Id = id;
             Name = name;
             Conductivity = conductivity;
             Light = light;
@@ -17,14 +16,14 @@ namespace IoTConsumer.Models
             Temperature = temperature;
         }
 
-        public string Id { get; }
-        public string Name { get; }
-        public Range Conductivity { get; }
-        public Range Light { get; }
-        public Range Moisture { get; }
-        public Range Temperature { get; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public Range Conductivity { get; set; }
+        public Range Light { get; set; }
+        public Range Moisture { get; set; }
+        public Range Temperature { get; set; }
 
-        internal bool IsHappy(FloraMessageModel floraMessage)
+        internal bool IsHappy(FloraDeviceMessageModel floraMessage)
         {
             return Conductivity.Contains(floraMessage.Conductivity)
                 && Light.Contains(floraMessage.Light)
