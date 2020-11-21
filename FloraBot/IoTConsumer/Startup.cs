@@ -13,14 +13,17 @@ namespace IoTConsumer
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
+            var configuration = builder.GetContext().Configuration;
+
+            var botClientServiceUri = configuration["BotClientServiceUri"];
             builder.Services.AddHttpClient<BotClientService>(client =>
             {
-                client.BaseAddress = new Uri("https://a769ba9d691c.ngrok.io/api/");
+                client.BaseAddress = new Uri(botClientServiceUri);
             });
 
             builder.Services.AddScoped<PlantService>();
 
-            string connectionString = builder.GetContext().Configuration.GetConnectionStringOrSetting("DBConnectionString");
+            string connectionString = configuration.GetConnectionStringOrSetting("DBConnectionString");
             builder.Services.AddDbContext<FloraDBContext>(options =>
             {
                 options.UseSqlServer(connectionString);
