@@ -1,8 +1,6 @@
-﻿using FloraBot;
-using FloraBot.IntentHandlers;
+﻿using FloraBot.Middlewares;
 using FloraBot.Services.LUIS;
 using Microsoft.Bot.Builder.AI.Luis;
-using Microsoft.Bot.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using System;

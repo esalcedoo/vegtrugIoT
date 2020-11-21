@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -16,16 +15,12 @@ namespace FloraBot.Bots
         private ConversationState _conversationState;
         private readonly IEnumerable<ILUISeIntentHandler> _intentHandlers;
         private readonly QnADialog _qnADialog;
-        private readonly ResumeDialog _resumeDialog;
-        private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
 
-        public Bot(ConversationState conversationState, ConcurrentDictionary<string, ConversationReference> conversationReferences, IEnumerable<ILUISeIntentHandler> intentHandlers, QnADialog qnADialog, ResumeDialog resumeDialog)
+        public Bot(ConversationState conversationState,  IEnumerable<ILUISeIntentHandler> intentHandlers, QnADialog qnADialog)
         {
             _conversationState = conversationState;
             _intentHandlers = intentHandlers;
             _qnADialog = qnADialog;
-            _resumeDialog = resumeDialog;
-            _conversationReferences = conversationReferences;
         }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
@@ -34,13 +29,6 @@ namespace FloraBot.Bots
 
             // Save any state changes that might have occured during the turn.
             await _conversationState.SaveChangesAsync(turnContext, false, cancellationToken);
-        }
-
-        protected override Task OnConversationUpdateActivityAsync(ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            AddConversationReference(turnContext.Activity as Activity);
-
-            return base.OnConversationUpdateActivityAsync(turnContext, cancellationToken);
         }
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
@@ -86,11 +74,6 @@ namespace FloraBot.Bots
             RecognizerResult luisResult = turnContext.TurnState
                             .Get<RecognizerResult>("LuisRecognizerResult");
             return luisResult.Intents.FirstOrDefault().Key;
-        }
-        private void AddConversationReference(Activity activity)
-        {
-            ConversationReference conversationReference = activity.GetConversationReference();
-            _conversationReferences.AddOrUpdate(conversationReference.User.Id, conversationReference, (key, newValue) => conversationReference);
         }
 
     }

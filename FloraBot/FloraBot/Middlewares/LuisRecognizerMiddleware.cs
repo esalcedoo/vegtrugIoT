@@ -1,12 +1,10 @@
-﻿using FloraBot.IntentHandlers;
-using Microsoft.Bot.Builder;
+﻿using Microsoft.Bot.Builder;
 using Microsoft.Bot.Builder.AI.Luis;
 using Microsoft.Bot.Schema;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace FloraBot
+namespace FloraBot.Middlewares
 {
     public class LuisRecognizerMiddleware : IMiddleware
     {

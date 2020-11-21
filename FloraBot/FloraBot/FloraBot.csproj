@@ -1,9 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>a8066e2d-ad76-4fca-a49e-09985c800489</UserSecretsId>
+    <ApplicationInsightsResourceId>/subscriptions/16032a5c-8d67-4317-b8e7-ab77fd3bef95/resourceGroups/W4TT/providers/microsoft.insights/components/w4ttbot</ApplicationInsightsResourceId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.15.0" />
     <PackageReference Include="Microsoft.Bot.Builder.AI.Luis" Version="4.11.0" />
     <PackageReference Include="Microsoft.Bot.Builder.AI.QnA" Version="4.11.0" />
     <PackageReference Include="Microsoft.Bot.Builder.Integration.AspNet.Core" Version="4.11.0" />

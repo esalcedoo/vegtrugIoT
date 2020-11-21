@@ -1,4 +1,5 @@
 ﻿using FloraBot.Bots;
+using FloraBot.Middlewares;
 using FloraBot.Services.Flora;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,6 +40,9 @@ namespace FloraBot
             // Create the Conversation state. (Used by the Dialog system itself.)
             services.AddSingleton<ConversationState>();
 
+            // Create the conversation reference middleware
+            services.AddSingleton<ConversationReferenceMiddleware>();
+
             // Create a global hashset for our ConversationReferences
             services.AddSingleton<ConcurrentDictionary<string, ConversationReference>>();
             
@@ -57,6 +61,7 @@ namespace FloraBot
 
             // Add all Dialogs we are gonna use
             services.AddDialogs();
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_CONNECTIONSTRING"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
