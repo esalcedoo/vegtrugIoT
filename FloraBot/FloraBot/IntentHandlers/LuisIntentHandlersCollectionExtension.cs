@@ -7,7 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddLuisIntentHandlers(this IServiceCollection services)
         {
-            services.AddTransient<ILUISeIntentHandler, ResumeIntentHandler>();
+            services.AddTransient<ILUISeIntentHandler, SummaryIntentHandler>();
             services.AddTransient<ILUISeIntentHandler, LuisNoneHandler>();
             return services;
         }

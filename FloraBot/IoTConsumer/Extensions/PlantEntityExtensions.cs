@@ -1,4 +1,4 @@
-﻿using IoTConsumer.Models;
+﻿using FloraModels;
 using System;
 
 namespace IoTConsumer.Data
@@ -12,7 +12,7 @@ namespace IoTConsumer.Data
             var temperature = new Range(new Index((int)plantEntity.TemperatureLowerValue), new Index((int)plantEntity.TemperatureHigherValue));
             var moisture = new Range(new Index(plantEntity.MoistureLowerValue), new Index(plantEntity.MoistureHigherValue));
 
-            return new PlantModel(plantEntity.Name, conductivity, light, moisture, temperature);
+            return new PlantModel(plantEntity.Id, plantEntity.Name, conductivity, light, moisture, temperature);
         }
     }
 }

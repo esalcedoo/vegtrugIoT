@@ -15,12 +15,14 @@ namespace FloraBot.Bots
         private ConversationState _conversationState;
         private readonly IEnumerable<ILUISeIntentHandler> _intentHandlers;
         private readonly QnADialog _qnADialog;
+        private readonly SummaryDialog _summaryDialog;
 
-        public Bot(ConversationState conversationState,  IEnumerable<ILUISeIntentHandler> intentHandlers, QnADialog qnADialog)
+        public Bot(ConversationState conversationState,  IEnumerable<ILUISeIntentHandler> intentHandlers, QnADialog qnADialog, SummaryDialog summaryDialog)
         {
             _conversationState = conversationState;
             _intentHandlers = intentHandlers;
             _qnADialog = qnADialog;
+            _summaryDialog = summaryDialog;
         }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
@@ -36,6 +38,7 @@ namespace FloraBot.Bots
             DialogSet dialogSet = new DialogSet(_conversationState.CreateProperty<DialogState>("DialogState"));
 
             dialogSet.Add(_qnADialog);
+            dialogSet.Add(_summaryDialog);
 
             DialogContext dialogContext = await dialogSet.CreateContextAsync(turnContext, cancellationToken);
             DialogTurnResult results = await dialogContext.ContinueDialogAsync(cancellationToken);

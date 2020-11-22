@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IoTConsumer.Extensions
+namespace FloraModels.Extensions
 {
     public static class RangeExtensions
     {

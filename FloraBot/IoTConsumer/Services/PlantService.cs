@@ -1,7 +1,9 @@
-﻿using IoTConsumer.Data;
+﻿using FloraModels;
+using IoTConsumer.Data;
 using IoTConsumer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -51,5 +53,49 @@ namespace IoTConsumer.Services
 
             return plantEntity.ToModel();
         }
+
+        public async Task<PlantModel> FindPlantById(int id)
+        {
+            var plantEntity = await _context.Plants
+                                    .FindAsync(id);
+
+            return plantEntity.ToModel();
+        }
+
+        public async Task<List<PlantModel>> FindPlantsById(List<int> ids)
+        {
+            var plantsEntity = await _context.Plants
+                                    .Where(plant => ids.Contains(plant.Id)).ToListAsync();
+
+            return plantsEntity.Select(plant => plant.ToModel()).ToList();
+        }
+
+        public async Task<List<CurrentStatusPlantModel>> GetCurrentStatus()
+        {
+            // TO-DO GroupBy with EFCore 5.0
+            List<EntryEntity> entries = await _context.Entries
+                                .Where(entry => entry.Timestamp > DateTime.Now.AddDays(-1))
+                                .ToListAsync();
+
+            return entries.GroupBy(entry => entry.PlantId)
+                .Select(gr => gr.OrderByDescending(entry => entry.Timestamp).FirstOrDefault())
+                .Select(entry => new CurrentStatusPlantModel
+                {
+                    Conductivity = entry.Conductivity,
+                    Light = entry.Light,
+                    Moisture = entry.Moisture,
+                    PlantId = entry.PlantId,
+                    Temperature = entry.Temperature,
+                    Timestamp = entry.Timestamp.Value
+                }).ToList();
+        }
+
+        //public async Task<List<CurrentStatusPlantModel>> FindPlantsById(List<int> ids)
+        //{
+        //    var plantsEntity = await _context.Plants
+        //                            .Where(plant => ids.Contains(plant.Id)).ToListAsync();
+
+        //    return plantsEntity.Select(plant => plant.ToModel()).ToList();
+        //}
     }
 }

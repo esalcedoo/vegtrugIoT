@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IoTConsumer.Models
+namespace FloraModels.Ranges
 {
     public static class LightRangesModel
     {

@@ -20,7 +20,8 @@ namespace FloraBot.Controllers
         private readonly string _appId;
         private readonly ConcurrentDictionary<string, ConversationReference> _conversationReferences;
 
-        public NotifyController(IBotFrameworkHttpAdapter adapter, IConfiguration configuration, ConcurrentDictionary<string, ConversationReference> conversationReferences)
+        public NotifyController(IBotFrameworkHttpAdapter adapter, IConfiguration configuration,
+                                ConcurrentDictionary<string, ConversationReference> conversationReferences)
         {
             _adapter = adapter;
             _conversationReferences = conversationReferences;
@@ -41,7 +42,8 @@ namespace FloraBot.Controllers
             foreach (var conversationReference in _conversationReferences.Values)
             {
                 MicrosoftAppCredentials.TrustServiceUrl(conversationReference.ServiceUrl);
-                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, BotCallBack(floraMessage.Text), default);
+                await ((BotAdapter)_adapter).ContinueConversationAsync(_appId, conversationReference, 
+                    BotCallBack(floraMessage.Text), default);
             }
 
             // Let the caller know proactive messages have been sent

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FloraBot", "FloraBot\FloraB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IoTConsumer", "IoTConsumer\IoTConsumer.csproj", "{EA909248-A560-4987-BFA8-1A6AADF1BF5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FloraModels", "FloraModels\FloraModels.csproj", "{3AF231AC-0985-4ED5-BD40-8C43DB7A5C4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EA909248-A560-4987-BFA8-1A6AADF1BF5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA909248-A560-4987-BFA8-1A6AADF1BF5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA909248-A560-4987-BFA8-1A6AADF1BF5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AF231AC-0985-4ED5-BD40-8C43DB7A5C4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AF231AC-0985-4ED5-BD40-8C43DB7A5C4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AF231AC-0985-4ED5-BD40-8C43DB7A5C4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AF231AC-0985-4ED5-BD40-8C43DB7A5C4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

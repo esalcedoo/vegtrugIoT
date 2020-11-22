@@ -56,7 +56,7 @@ namespace FloraBot
             // Register sessionize api client
             services.AddHttpClient<FloraService>(client=>
             {
-                client.BaseAddress = new Uri("");
+                client.BaseAddress = new Uri(Configuration["FloraService:URL"]);
             });
 
             // Add all Dialogs we are gonna use

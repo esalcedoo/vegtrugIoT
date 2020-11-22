@@ -8,28 +8,28 @@ using System.Threading.Tasks;
 
 namespace FloraBot.Services.LUIS
 {
-    public class ResumeIntentHandler : ILUISeIntentHandler
+    public class SummaryIntentHandler : ILUISeIntentHandler
     {
         private readonly ConversationState _conversationState;
-        private readonly ResumeDialog _resumeDialog;
+        private readonly SummaryDialog _summaryDialog;
 
-        public ResumeIntentHandler(ConversationState conversationState, ResumeDialog resumeDialog)
+        public SummaryIntentHandler(ConversationState conversationState, SummaryDialog resumeDialog)
         {
             _conversationState = conversationState;
-            _resumeDialog = resumeDialog;
+            _summaryDialog = resumeDialog;
         }
 
         public async Task<DialogTurnResult> Handle(DialogContext dialogContext, CancellationToken cancellationToken)
         {
-            return await dialogContext.BeginDialogAsync(_resumeDialog.Id, cancellationToken: cancellationToken);
+            return await dialogContext.BeginDialogAsync(_summaryDialog.Id, cancellationToken: cancellationToken);
         }
 
         public async Task Handle(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            await _resumeDialog.RunAsync(turnContext,
+            await _summaryDialog.RunAsync(turnContext,
                             _conversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
         }
 
-        public bool IsValid(string intent) => intent == "Resume";
+        public bool IsValid(string intent) => intent == "Summary";
     }
 }

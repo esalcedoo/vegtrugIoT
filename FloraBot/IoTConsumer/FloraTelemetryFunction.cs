@@ -3,12 +3,11 @@ using IoTHubTrigger = Microsoft.Azure.WebJobs.EventHubTriggerAttribute;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.EventHubs;
 using System.Text;
-using System.Net.Http;
 using Microsoft.Extensions.Logging;
 using IoTConsumer.Models;
 using IoTConsumer.Services;
 using System.Threading.Tasks;
-using IoTConsumer.Data;
+using FloraModels;
 
 namespace IoTConsumer
 {
@@ -33,7 +32,10 @@ namespace IoTConsumer
 
             PlantModel plant = await _plantService.FindPlantByDeviceId(floraMessage.DeviceId);
 
-            if (!plant.IsHappy(floraMessage) && plant.NeedsWater(floraMessage.Moisture))
+            if (!plant.IsHappy(floraMessage.Conductivity,
+                               floraMessage.Light,
+                               floraMessage.Moisture,
+                               floraMessage.Temperature) && plant.NeedsWater(floraMessage.Moisture))
             {
                 await _botClientService.SendProactiveMessageAsync($"{plant.Name} necesita agua");
             }

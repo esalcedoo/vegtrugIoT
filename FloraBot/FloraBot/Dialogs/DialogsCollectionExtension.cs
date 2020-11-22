@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddDialogs(this IServiceCollection services)
         {
             services.AddSingleton<QnADialog>();
-            services.AddSingleton<ResumeDialog>();
+            services.AddSingleton<SummaryDialog>();
             return services;
         }
     }
