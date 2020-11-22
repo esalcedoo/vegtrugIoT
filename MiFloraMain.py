@@ -1,51 +1,43 @@
+
 import random
 import time
 
 # Using the Python Device SDK for IoT Hub:
 #   https://github.com/Azure/azure-iot-sdk-python
 from azure.iot.device import IoTHubDeviceClient, Message
-from MiFloraScanner import MiFloraScanner
 from MiFloraData import MiFloraData
 
-# The device connection string to authenticate the device with your IoT hub.
-# Using the Azure CLI:
-# az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
-CONNECTION_STRING = "<YOUR_IOT_HUB_CONNECTION_STRING>"
 
-def initIoTHubClient():
+from configparser import ConfigParser
+
+def initIoTHubClient(connectionString):
     # Create an IoT Hub client
-    iothubClient = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
+    iothubClient = IoTHubDeviceClient.create_from_connection_string(connectionString)
     return iothubClient
 
-def runIoTHubClient():
+def runMain():
 
     try:
-        iothubClient = initIoTHubClient()
-        print ( "IoT Hub device sending periodic messages, press Ctrl-C to exit" )
+        # Load configuration file
+        configParser = ConfigParser() 
+        configParser.read('config.ini')
 
-        while True:
+        iothubClient = initIoTHubClient(configParser['ConnectionStrings']['IoTHub'])
 
-            miFloraScanner = MiFloraScanner(5)
-            
-            floraMACS = miFloraScanner.getMACS()
-            
-            for mac in floraMACS:
-                #print(mac)
+        print ( "IoT Hub device sending periodic messages" )
+        while True:  
+            for [n, mac] in configParser['macs'].items():
                 miFloraData = MiFloraData(mac)
-                
+
                 # Build the message with miFloraData telemetry values.
                 message = miFloraData.scan()
-                #print(message)
                 
                 # Send the message.
-                #print( "Sending message: {}".format(message) )
+                print(message)
                 iothubClient.send_message(message)
-                #print ( "Message successfully sent" )
-
+            time.sleep(10) # once per hour
     except KeyboardInterrupt:
         print ( "IoTHubClient sample stopped" )
 
 if __name__ == '__main__':
-    print ( "IoT Hub - Messages from Flora devices" )
-    print ( "Press Ctrl-C to exit" )
-    runIoTHubClient()
+    runMain()
