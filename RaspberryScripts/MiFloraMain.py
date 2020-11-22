@@ -1,3 +1,4 @@
+
 import random
 import time
 
@@ -6,26 +7,26 @@ import time
 from azure.iot.device import IoTHubDeviceClient, Message
 from MiFloraData import MiFloraData
 
-# The device connection string to authenticate the device with your IoT hub.
-# Using the Azure CLI:
-# az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
-CONNECTION_STRING = "HostName=W4TTIoTHub.azure-devices.net;DeviceId=raspi4W4TT;SharedAccessKey=/Pd/TTkTRZLw/2vMxD5YMm/TlazTxyiyZHhnNvHddVc="
 
-def initIoTHubClient():
+from configparser import ConfigParser
+
+def initIoTHubClient(connectionString):
     # Create an IoT Hub client
-    iothubClient = IoTHubDeviceClient.create_from_connection_string(CONNECTION_STRING)
+    iothubClient = IoTHubDeviceClient.create_from_connection_string(connectionString)
     return iothubClient
 
-def runIoTHubClient():
+def runMain():
 
     try:
-        iothubClient = initIoTHubClient()
-        print ( "IoT Hub device sending periodic messages, press Ctrl-C to exit" )
+        # Load configuration file
+        configParser = ConfigParser() 
+        configParser.read('config.ini')
 
-        while True:
-            floraMACS = ["C4:7C:8D:6B:3B:DC","80:EA:CA:88:F5:5D"]
-            
-            for mac in floraMACS:
+        iothubClient = initIoTHubClient(configParser['ConnectionStrings']['IoTHub'])
+
+        print ( "IoT Hub device sending periodic messages" )
+        while True:  
+            for [n, mac] in configParser['macs'].items():
                 miFloraData = MiFloraData(mac)
 
                 # Build the message with miFloraData telemetry values.
@@ -34,12 +35,9 @@ def runIoTHubClient():
                 # Send the message.
                 print(message)
                 iothubClient.send_message(message)
-            time.sleep(1) # once per day
-                    
+            time.sleep(10) # once per hour
     except KeyboardInterrupt:
         print ( "IoTHubClient sample stopped" )
 
 if __name__ == '__main__':
-    print ( "Flora devices" )
-    print ( "Press Ctrl-C to exit" )
-    runIoTHubClient()
+    runMain()
