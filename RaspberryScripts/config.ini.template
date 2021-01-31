@@ -1,0 +1,9 @@
+[ConnectionStrings]
+IoTHub =  **IoT Device Conection String** 
+[macs]
+1 = **Your vegtrug mac**
+[IoTCentral]
+IDScope = **IoT Central Device Scope**
+DeviceId = **IoT Central Device Device ID**
+PrimaryKey = **IoT Central Device PrimaryKey**
+Host = global.azure-devices-provisioning.net
