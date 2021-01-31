@@ -1,0 +1,78 @@
+[
+  {
+    "@id": "dtmi:plantuchis:vegtrugTemplatewd;1",
+    "@type": "Interface",
+    "contents": [
+      {
+        "@id": "dtmi:plantuchis:vegtrugTemplatewd:ID;1",
+        "@type": "Property",
+        "displayName": {
+          "en": "ID"
+        },
+        "name": "ID",
+        "schema": "string",
+        "writable": true
+      },
+      {
+        "@id": "dtmi:plantuchis:vegtrugTemplatewd:Battery;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Battery"
+        },
+        "name": "Battery",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:plantuchis:vegtrugTemplatewd:Fertility;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Fertility"
+        },
+        "name": "Fertility",
+        "schema": "integer"
+      },
+      {
+        "@id": "dtmi:plantuchis:vegtrugTemplatewd:Humidity;1",
+        "@type": [
+          "Telemetry",
+          "Humidity"
+        ],
+        "displayName": {
+          "en": "Humidity"
+        },
+        "name": "Humidity",
+        "schema": "double"
+      },
+      {
+        "@id": "dtmi:plantuchis:vegtrugTemplatewd:Temperature;1",
+        "@type": [
+          "Telemetry",
+          "Temperature"
+        ],
+        "displayName": {
+          "en": "Temperature"
+        },
+        "name": "Temperature",
+        "schema": "double"
+      },
+      {
+        "@id": "dtmi:plantuchis:vegtrugTemplatewd:Light;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Light"
+        },
+        "name": "Light",
+        "schema": "double",
+        "unit": "lux"
+      }
+    ],
+    "displayName": {
+      "en": "vegtrugTemplate"
+    },
+    "@context": [
+      "dtmi:iotcentral:context;2",
+      "dtmi:dtdl:context;2"
+    ]
+  }
+]

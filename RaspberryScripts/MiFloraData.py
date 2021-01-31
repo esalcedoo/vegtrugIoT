@@ -12,12 +12,18 @@ class MiFloraData():
         self.poller.fill_cache()
         
         data = {
-          "MI_ID": self.poller._mac,
-          "MI_BATTERY": self.poller.parameter_value(MI_BATTERY) ,
-          "MI_CONDUCTIVITY": self.poller.parameter_value(MI_CONDUCTIVITY),
-          "MI_LIGHT": self.poller.parameter_value(MI_LIGHT),
-          "MI_MOISTURE": self.poller.parameter_value(MI_MOISTURE),
-          "MI_TEMPERATURE": self.poller.parameter_value(MI_TEMPERATURE)
-        }
+          "MAC": self.poller._mac,
+          "Battery": self.poller.parameter_value(MI_BATTERY) ,
+          "Fertility": self.poller.parameter_value(MI_CONDUCTIVITY),
+          "Light": self.poller.parameter_value(MI_LIGHT),
+          "Humidity": self.poller.parameter_value(MI_MOISTURE),
+          "Temperature": self.poller.parameter_value(MI_TEMPERATURE)
+        } 
+
+
         # convert into JSON:
         return json.dumps(data)
+
+
+
+
