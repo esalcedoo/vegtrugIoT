@@ -52,9 +52,6 @@ async def main():
                 provisioning_host, id_scope, registration_id, symmetric_key
     )
 
-    print("The complete registration result is")
-    print(registration_result.registration_state)
-
     if registration_result.status == "assigned":
             device_client = IoTHubDeviceClient.create_from_symmetric_key(
                 symmetric_key=symmetric_key,
