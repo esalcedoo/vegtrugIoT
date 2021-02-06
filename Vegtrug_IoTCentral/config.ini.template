@@ -1,5 +1,3 @@
-[ConnectionStrings]
-IoTHub =  **IoT Device Conection String** 
 [macs]
 1 = **Your vegtrug mac**
 [IoTCentral]

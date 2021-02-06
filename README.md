@@ -1,6 +1,3 @@
-```bash
-python3 -m venv /path/to/new/virtual/environment
-```
 ## Execute
 ```bash
 
@@ -26,8 +23,3 @@ And run:
 ```
 python MiFloraMain.py
 ```
-
-
-
-
-

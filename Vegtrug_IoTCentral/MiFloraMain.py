@@ -21,25 +21,20 @@ async def provision_device(provisioning_host, id_scope, registration_id, symmetr
     )
     return await provisioning_device_client.register()
 
-
-
-async def send_telemetry(device_client, message):
+async def send_telemetry(device_client, message, name):
     try:
         print("Sending telemetry for temperature")   
         msg = Message(message)
+        msg.custom_properties["$.sub"] = name
         msg.content_encoding = "utf-8"
         msg.content_type = "application/json"
+
+        print(msg.custom_properties["$.sub"])
 
         await device_client.send_message(msg)
 
     except Exception as e:
         print(e)
-
-
-
-                    
-     
-
 
 # MAIN STARTS
 async def main():
@@ -52,8 +47,6 @@ async def main():
     id_scope = configParser['IoTCentral']['IDScope']
     registration_id = configParser['IoTCentral']['DeviceId']
     symmetric_key = configParser['IoTCentral']['PrimaryKey']
-    mac = configParser['macs']['1']
-
 
     registration_result = await provision_device(
                 provisioning_host, id_scope, registration_id, symmetric_key
@@ -63,10 +56,6 @@ async def main():
     print(registration_result.registration_state)
 
     if registration_result.status == "assigned":
-            print("Device was assigned")
-            print(registration_result.registration_state.assigned_hub)
-            print(registration_result.registration_state.device_id)
-
             device_client = IoTHubDeviceClient.create_from_symmetric_key(
                 symmetric_key=symmetric_key,
                 hostname=registration_result.registration_state.assigned_hub,
@@ -80,18 +69,17 @@ async def main():
     # Connect the client.
     await device_client.connect()
 
-    # data_from_vetrug = getVegtrugData();
+    for [name, mac] in configParser['macs'].items():
+        miFloraData = MiFloraData(mac)
 
-    miFloraData = MiFloraData(mac)
-
-    # Build the message with miFloraData telemetry values.
-    message = miFloraData.scan()
+        # Build the message with miFloraData telemetry values.
+        message = miFloraData.scan()
     
-    # Send the message.
-    print(message)
+        # Print the message.
+        print(message)
     
-    # Send telemetry
-    await send_telemetry(device_client, message)
+        # Send telemetry
+        await send_telemetry(device_client, message, name.capitalize())
 
     # Close
     await device_client.disconnect()

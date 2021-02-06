@@ -23,7 +23,7 @@ def runMain():
         configParser.read('config.ini')
 
         iothubClient = initIoTHubClient(configParser['ConnectionStrings']['IoTHub'])
-        print (iothubClient)
+
         print ( "IoT Hub device sending periodic messages" )
         while True:  
             for [n, mac] in configParser['macs'].items():
@@ -35,7 +35,6 @@ def runMain():
                 # Send the message.
                 print(message)
                 iothubClient.send_message(message)
-                
             time.sleep(10) # once per hour
     except KeyboardInterrupt:
         print ( "IoTHubClient sample stopped" )

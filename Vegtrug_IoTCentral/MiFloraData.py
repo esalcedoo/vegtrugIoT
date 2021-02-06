@@ -12,12 +12,11 @@ class MiFloraData():
         self.poller.fill_cache()
         
         data = {
-          "MAC": self.poller._mac,
-          "Battery": self.poller.parameter_value(MI_BATTERY) ,
-          "Fertility": self.poller.parameter_value(MI_CONDUCTIVITY),
-          "Light": self.poller.parameter_value(MI_LIGHT),
-          "Humidity": self.poller.parameter_value(MI_MOISTURE),
-          "Temperature": self.poller.parameter_value(MI_TEMPERATURE)
+            "Battery": self.poller.parameter_value(MI_BATTERY) ,
+            "Fertility": self.poller.parameter_value(MI_CONDUCTIVITY),
+            "Light": self.poller.parameter_value(MI_LIGHT),
+            "Humidity": self.poller.parameter_value(MI_MOISTURE),
+            "Temperature": self.poller.parameter_value(MI_TEMPERATURE)          
         } 
 
 
