@@ -13,6 +13,19 @@ import uuid
 import json
 
 
+class Configuration:
+    def __init__(self):
+        # Load configuration file
+        configParser = ConfigParser() 
+        configParser.read('config.ini')
+        self.provisioning_host = configParser['IoTCentral']['Host']
+        self.id_scope = configParser['IoTCentral']['IDScope']
+        self.registration_id = configParser['IoTCentral']['DeviceId']
+        self.symmetric_key = configParser['IoTCentral']['PrimaryKey']
+        self.macs = configParser['macs'].items()
+
+
+
 # PROVISION DEVICE
 async def provision_device(provisioning_host, id_scope, registration_id, symmetric_key):
     provisioning_device_client = ProvisioningDeviceClient.create_from_symmetric_key(
@@ -22,6 +35,7 @@ async def provision_device(provisioning_host, id_scope, registration_id, symmetr
         symmetric_key=symmetric_key,
     )
     return await provisioning_device_client.register()
+
 
 async def send_telemetry(device_client, message, name):
     try:
@@ -40,6 +54,7 @@ async def scan(name, mac):
     # Build the message with miFloraData telemetry values.
     message = miFloraData.scan()
     return message
+
 
 async def sending_vegtrug_telemetry(device_client, vegtrugs):    
      while True:
@@ -60,21 +75,18 @@ async def send_vegtrug_data (device_client, vegtrugs):
 async def main():
 
     # Load configuration file
-    configParser = ConfigParser() 
-    configParser.read('config.ini')
-
-    provisioning_host = configParser['IoTCentral']['Host']
-    id_scope = configParser['IoTCentral']['IDScope']
-    registration_id = configParser['IoTCentral']['DeviceId']
-    symmetric_key = configParser['IoTCentral']['PrimaryKey']
+    configuration = Configuration()
 
     registration_result = await provision_device(
-                provisioning_host, id_scope, registration_id, symmetric_key
+                configuration.provisioning_host, 
+                configuration.id_scope, 
+                configuration.registration_id, 
+                configuration.symmetric_key
     )
 
     if registration_result.status == "assigned":
             device_client = IoTHubDeviceClient.create_from_symmetric_key(
-                symmetric_key=symmetric_key,
+                symmetric_key=configuration.symmetric_key,
                 hostname=registration_result.registration_state.assigned_hub,
                 device_id=registration_result.registration_state.device_id,
             )
@@ -87,7 +99,7 @@ async def main():
     await device_client.connect()
 
     # thread that send the telemetry
-    send_telemetry_task = asyncio.create_task(sending_vegtrug_telemetry(device_client, configParser['macs'].items()))
+    send_telemetry_task = asyncio.create_task(sending_vegtrug_telemetry(device_client, configuration.macs))
 
     while True:
         # command 
@@ -95,7 +107,7 @@ async def main():
         command_request = await device_client.receive_method_request("ScanNow")   
         
         print("[Scan now...!!!]")        
-        await send_vegtrug_data(device_client, configParser['macs'].items())        
+        await send_vegtrug_data(device_client, configuration.macs)        
         
         method_response = MethodResponse.create_from_method_request(command_request, 200)
         await device_client.send_method_response(method_response)
