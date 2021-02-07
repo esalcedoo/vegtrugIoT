@@ -1,3 +1,34 @@
+
+
+
+## Import template:
+
+- Go to your IoT Central Portal > Device templates -> +New
+- Create a custom device template > IoT device 
+- Device template name -> FloraComponentsTemplate (or any name)
+- Create a model -> Import a model. 
+
+- Add views (they are not automatically imported :(  )
+
+
+- Publish
+
+## Create a new device:
+
+- Device > +New
+- Device template > FloraComponentsTemplate
+- Devide name -> the default or whatever you want (raspisa4)
+- Device ID -> this will be added to the config.ini file
+
+## Config.ini file: 
+
+- Devices > select the device >  "Connect" (icon in the top right)
+- Device connection
+- Fill ID Scope, Device ID, Primary Key.
+
+<br >
+
+
 ## Execute
 ```bash
 
@@ -23,3 +54,4 @@ And run:
 ```
 python MiFloraMain.py
 ```
+

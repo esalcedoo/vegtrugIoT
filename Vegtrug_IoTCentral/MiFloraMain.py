@@ -3,7 +3,9 @@ from configparser import ConfigParser
 from azure.iot.device.aio import ProvisioningDeviceClient
 from azure.iot.device.aio import IoTHubDeviceClient
 from azure.iot.device import  Message
+from azure.iot.device import MethodResponse
 from MiFloraData import MiFloraData
+
 
 import asyncio
 import random
@@ -23,18 +25,23 @@ async def provision_device(provisioning_host, id_scope, registration_id, symmetr
 
 async def send_telemetry(device_client, message, name):
     try:
-        print("Sending telemetry for temperature")   
         msg = Message(message)
         msg.custom_properties["$.sub"] = name
         msg.content_encoding = "utf-8"
         msg.content_type = "application/json"
-
-        print(msg.custom_properties["$.sub"])
-
         await device_client.send_message(msg)
 
     except Exception as e:
         print(e)
+
+
+async def scan(name, mac):
+    miFloraData = MiFloraData(mac)
+    # Build the message with miFloraData telemetry values.
+    message = miFloraData.scan()
+    return message
+    
+
 
 # MAIN STARTS
 async def main():
@@ -52,9 +59,6 @@ async def main():
                 provisioning_host, id_scope, registration_id, symmetric_key
     )
 
-    print("The complete registration result is")
-    print(registration_result.registration_state)
-
     if registration_result.status == "assigned":
             device_client = IoTHubDeviceClient.create_from_symmetric_key(
                 symmetric_key=symmetric_key,
@@ -68,18 +72,18 @@ async def main():
 
     # Connect the client.
     await device_client.connect()
-
-    for [name, mac] in configParser['macs'].items():
-        miFloraData = MiFloraData(mac)
-
-        # Build the message with miFloraData telemetry values.
-        message = miFloraData.scan()
-    
-        # Print the message.
-        print(message)
-    
-        # Send telemetry
-        await send_telemetry(device_client, message, name.capitalize())
+    while True:
+        # command 
+        command_request = await device_client.receive_method_request("ScanNow")    
+        
+        for [name, mac] in configParser['macs'].items():
+            message = await scan(name, mac)    
+            print(name +": " + message)
+            await send_telemetry(device_client, message, name.capitalize())
+        
+        method_response = MethodResponse.create_from_method_request(command_request, 200)
+        await device_client.send_method_response(method_response)
+            
 
     # Close
     await device_client.disconnect()
