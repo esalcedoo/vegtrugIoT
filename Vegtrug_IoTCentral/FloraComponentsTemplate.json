@@ -1,0 +1,266 @@
+[
+  {
+    "@id": "dtmi:flora:FloraComponentsTemplate123;3",
+    "@type": "Interface",
+    "contents": [
+      {
+        "@id": "dtmi:flora:FloraComponentsTemplate123:Vegtrug_1;1",
+        "@type": "Component",
+        "displayName": {
+          "en": "Vegtrug_1"
+        },
+        "name": "Vegtrug_1",
+        "schema": "dtmi:flora:Vegtrug_1;1"
+      },
+      {
+        "@id": "dtmi:flora:FloraComponentsTemplate123:Vegtrug_2;1",
+        "@type": "Component",
+        "displayName": {
+          "en": "Vegtrug_2"
+        },
+        "name": "Vegtrug_2",
+        "schema": "dtmi:flora:Vegtrug_2;1"
+      },
+      {
+        "@id": "dtmi:flora:FloraComponentsTemplate123:ScanNow;2",
+        "@type": "Command",
+        "displayName": {
+          "en": "ScanNow"
+        },
+        "name": "ScanNow"
+      },
+      {
+        "@id": "dtmi:flora:FloraComponentsTemplate123:Vegtrug_3;2",
+        "@type": "Component",
+        "displayName": {
+          "en": "Vegtrug_3"
+        },
+        "name": "Vegtrug_3",
+        "schema": "dtmi:flora:Vegtrug_3;1"
+      }
+    ],
+    "displayName": {
+      "en": "FloraComponentsTemplate"
+    },
+    "@context": [
+      "dtmi:iotcentral:context;2",
+      "dtmi:dtdl:context;2"
+    ]
+  },
+  {
+    "@context": [
+      "dtmi:iotcentral:context;2",
+      "dtmi:dtdl:context;2"
+    ],
+    "@id": "dtmi:flora:Vegtrug_1;1",
+    "@type": "Interface",
+    "contents": [
+      {
+        "@id": "dtmi:flora:Vegtrug_1:Battery;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Battery"
+        },
+        "name": "Battery",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_1:Fertility;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Fertility"
+        },
+        "name": "Fertility",
+        "schema": "integer",
+        "unit": "microsecond"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_1:Humidity;1",
+        "@type": [
+          "Telemetry",
+          "Humidity"
+        ],
+        "displayName": {
+          "en": "Humidity"
+        },
+        "name": "Humidity",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_1:Temperature;1",
+        "@type": [
+          "Telemetry",
+          "Temperature"
+        ],
+        "displayName": {
+          "en": "Temperature"
+        },
+        "name": "Temperature",
+        "schema": "float",
+        "unit": "degreeCelsius"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_1:Light;1",
+        "@type": [
+          "Telemetry",
+          "Illuminance"
+        ],
+        "displayName": {
+          "en": "Light"
+        },
+        "name": "Light",
+        "schema": "float",
+        "unit": "lux"
+      }
+    ],
+    "displayName": {
+      "en": "Vegtrug_1"
+    }
+  },
+  {
+    "@context": [
+      "dtmi:iotcentral:context;2",
+      "dtmi:dtdl:context;2"
+    ],
+    "@id": "dtmi:flora:Vegtrug_2;1",
+    "@type": "Interface",
+    "contents": [
+      {
+        "@id": "dtmi:flora:Vegtrug_2:Battery;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Battery"
+        },
+        "name": "Battery",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_2:Fertility;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Fertility"
+        },
+        "name": "Fertility",
+        "schema": "integer",
+        "unit": "microsecond"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_2:Humidity;1",
+        "@type": [
+          "Telemetry",
+          "Humidity"
+        ],
+        "displayName": {
+          "en": "Humidity"
+        },
+        "name": "Humidity",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_2:Temperature;1",
+        "@type": [
+          "Telemetry",
+          "Temperature"
+        ],
+        "displayName": {
+          "en": "Temperature"
+        },
+        "name": "Temperature",
+        "schema": "float",
+        "unit": "degreeCelsius"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_2:Light;1",
+        "@type": [
+          "Telemetry",
+          "Illuminance"
+        ],
+        "displayName": {
+          "en": "Light"
+        },
+        "name": "Light",
+        "schema": "float",
+        "unit": "lux"
+      }
+    ],
+    "displayName": {
+      "en": "Vegtrug_2"
+    }
+  },
+  {
+    "@context": [
+      "dtmi:iotcentral:context;2",
+      "dtmi:dtdl:context;2"
+    ],
+    "@id": "dtmi:flora:Vegtrug_3;1",
+    "@type": "Interface",
+    "contents": [
+      {
+        "@id": "dtmi:flora:Vegtrug_3:Battery;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Battery"
+        },
+        "name": "Battery",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_3:Fertility;1",
+        "@type": "Telemetry",
+        "displayName": {
+          "en": "Fertility"
+        },
+        "name": "Fertility",
+        "schema": "integer",
+        "unit": "microsecond"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_3:Humidity;1",
+        "@type": [
+          "Telemetry",
+          "Humidity"
+        ],
+        "displayName": {
+          "en": "Humidity"
+        },
+        "name": "Humidity",
+        "schema": "integer",
+        "unit": "percent"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_3:Temperature;1",
+        "@type": [
+          "Telemetry",
+          "Temperature"
+        ],
+        "displayName": {
+          "en": "Temperature"
+        },
+        "name": "Temperature",
+        "schema": "float",
+        "unit": "degreeCelsius"
+      },
+      {
+        "@id": "dtmi:flora:Vegtrug_3:Light;1",
+        "@type": [
+          "Telemetry",
+          "Illuminance"
+        ],
+        "displayName": {
+          "en": "Light"
+        },
+        "name": "Light",
+        "schema": "float",
+        "unit": "lux"
+      }
+    ],
+    "displayName": {
+      "en": "Vegtrug_3"
+    }
+  }
+]

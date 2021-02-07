@@ -1,6 +1,6 @@
-
 import random
 import time
+import logging
 
 # Using the Python Device SDK for IoT Hub:
 #   https://github.com/Azure/azure-iot-sdk-python
@@ -24,20 +24,19 @@ def runMain():
 
         iothubClient = initIoTHubClient(configParser['ConnectionStrings']['IoTHub'])
 
-        print ( "IoT Hub device sending periodic messages" )
         while True:  
-            for [n, mac] in configParser['macs'].items():
+            for [name, mac] in configParser['macs'].items():
                 miFloraData = MiFloraData(mac)
 
                 # Build the message with miFloraData telemetry values.
                 message = miFloraData.scan()
                 
                 # Send the message.
-                print(message)
+                logging.info(name +": " + message)
                 iothubClient.send_message(message)
             time.sleep(10) # once per hour
-    except KeyboardInterrupt:
-        print ( "IoTHubClient sample stopped" )
+    except Exception as e:
+        logging.exception(e)
 
 if __name__ == '__main__':
     runMain()
