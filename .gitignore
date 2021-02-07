@@ -144,4 +144,4 @@ dmypy.json
 cython_debug/
 .vscode/launch.json
 Vegtrug_IoTCentral/config.ini
-Vegtrug_IoTCentral/config.ini
+Vegtrug_IoTHub/config.ini
