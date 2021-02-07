@@ -40,7 +40,20 @@ async def scan(name, mac):
     # Build the message with miFloraData telemetry values.
     message = miFloraData.scan()
     return message
-    
+
+async def sending_vegtrug_telemetry(device_client, vegtrugs):    
+     while True:
+        print("Sending every minute vegtrug telemetry... ")
+        await send_vegtrug_data (device_client, vegtrugs)        
+        await asyncio.sleep(60)
+
+
+async def send_vegtrug_data (device_client, vegtrugs):
+    for [name, mac] in vegtrugs:
+            message = await scan(name, mac)    
+            print(name +": " + message)
+            await send_telemetry(device_client, message, name.capitalize())
+
 
 
 # MAIN STARTS
@@ -72,14 +85,17 @@ async def main():
 
     # Connect the client.
     await device_client.connect()
+
+    # thread that send the telemetry
+    send_telemetry_task = asyncio.create_task(sending_vegtrug_telemetry(device_client, configParser['macs'].items()))
+
     while True:
         # command 
-        command_request = await device_client.receive_method_request("ScanNow")    
+        #registring C2D method
+        command_request = await device_client.receive_method_request("ScanNow")   
         
-        for [name, mac] in configParser['macs'].items():
-            message = await scan(name, mac)    
-            print(name +": " + message)
-            await send_telemetry(device_client, message, name.capitalize())
+        print("[Scan now...!!!]")        
+        await send_vegtrug_data(device_client, configParser['macs'].items())        
         
         method_response = MethodResponse.create_from_method_request(command_request, 200)
         await device_client.send_method_response(method_response)
