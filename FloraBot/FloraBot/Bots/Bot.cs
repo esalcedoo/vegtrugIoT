@@ -13,16 +13,22 @@ namespace FloraBot.Bots
     public class Bot : ActivityHandler
     {
         private ConversationState _conversationState;
-        private readonly IEnumerable<ILUISeIntentHandler> _intentHandlers;
+        private readonly IEnumerable<LUISIntentHandler> _intentHandlers;
         private readonly QnADialog _qnADialog;
         private readonly SummaryDialog _summaryDialog;
+        private readonly ScanNowDialog _scanNowDialog;
 
-        public Bot(ConversationState conversationState,  IEnumerable<ILUISeIntentHandler> intentHandlers, QnADialog qnADialog, SummaryDialog summaryDialog)
+        public Bot(ConversationState conversationState,
+            IEnumerable<LUISIntentHandler> intentHandlers,
+            QnADialog qnADialog,
+            SummaryDialog summaryDialog,
+            ScanNowDialog scanNowDialog)
         {
             _conversationState = conversationState;
             _intentHandlers = intentHandlers;
             _qnADialog = qnADialog;
             _summaryDialog = summaryDialog;
+            _scanNowDialog = scanNowDialog;
         }
 
         public override async Task OnTurnAsync(ITurnContext turnContext, CancellationToken cancellationToken = default)
@@ -35,30 +41,36 @@ namespace FloraBot.Bots
 
         protected override async Task OnMessageActivityAsync(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
-            DialogSet dialogSet = new DialogSet(_conversationState.CreateProperty<DialogState>("DialogState"));
-
-            dialogSet.Add(_qnADialog);
-            dialogSet.Add(_summaryDialog);
+            DialogSet dialogSet = InitializeDialogSet();
 
             DialogContext dialogContext = await dialogSet.CreateContextAsync(turnContext, cancellationToken);
             DialogTurnResult results = await dialogContext.ContinueDialogAsync(cancellationToken);
 
             if (results.Status == DialogTurnStatus.Empty)
             {
-                string luisIntentKey = GetTopIntentKey(turnContext);
-
                 var intentHandler = _intentHandlers.FirstOrDefault(handler =>
-                    handler.IsValid(luisIntentKey));
+                    handler.IsValid(turnContext));
 
                 if (intentHandler is null)
                 {
                     await turnContext.SendActivityAsync(MessageFactory.Text(
-                        $"Intención {luisIntentKey} no soportada."));
+                        $"Funcionalidad no soportada."));
                     return;
                 }
 
                 await intentHandler.Handle(dialogContext, cancellationToken);
             }
+        }
+
+        private DialogSet InitializeDialogSet()
+        {
+            DialogSet dialogSet = new DialogSet(_conversationState.CreateProperty<DialogState>("DialogState"));
+
+            dialogSet.Add(_qnADialog);
+            dialogSet.Add(_summaryDialog);
+            dialogSet.Add(_scanNowDialog);
+
+            return dialogSet;
         }
 
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
@@ -67,17 +79,9 @@ namespace FloraBot.Bots
             {
                 if (member.Id != turnContext.Activity.Recipient.Id)
                 {
-                    await turnContext.SendActivityAsync(MessageFactory.Text($"Hello W4TT!"), cancellationToken);
+                    await turnContext.SendActivityAsync(MessageFactory.Text($"Hello!"), cancellationToken);
                 }
             }
         }
-
-        private static string GetTopIntentKey(ITurnContext turnContext)
-        {
-            RecognizerResult luisResult = turnContext.TurnState
-                            .Get<RecognizerResult>("LuisRecognizerResult");
-            return luisResult.Intents.FirstOrDefault().Key;
-        }
-
     }
 }

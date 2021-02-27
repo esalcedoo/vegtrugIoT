@@ -9,6 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddSingleton<QnADialog>();
             services.AddSingleton<SummaryDialog>();
+            services.AddSingleton<ScanNowDialog>();
             return services;
         }
     }

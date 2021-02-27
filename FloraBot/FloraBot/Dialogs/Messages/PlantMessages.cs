@@ -9,7 +9,7 @@ namespace FloraBot.Dialogs.Messages
 {
     public static class PlantMessages
     {
-        internal static string Summary(List<PlantModel> plants, IEnumerable<CurrentStatusPlantModel> plantsStatus)
+        internal static string Summary(List<PlantModel> plants, IEnumerable<StatusPlantModel> plantsStatus)
         {
             Dictionary<string, List<string>> messageParameters = new();
 

@@ -2,7 +2,7 @@
 
 namespace FloraModels
 {
-    public class CurrentStatusPlantModel
+    public class StatusPlantModel
     {
         public int PlantId { get; set; }
         public string Name { get; set; }

@@ -39,12 +39,12 @@ namespace FloraModels
                 && Temperature.Contains(temperature);
         }
 
-        public bool IsHappy(CurrentStatusPlantModel currentStatusPlant)
+        public bool IsHappy(StatusPlantModel StatusPlant)
         {
-            return Conductivity.Contains(currentStatusPlant.Conductivity)
-                && Light.Contains(currentStatusPlant.Light)
-                && Moisture.Contains(currentStatusPlant.Moisture)
-                && Temperature.Contains(currentStatusPlant.Temperature);
+            return Conductivity.Contains(StatusPlant.Conductivity)
+                && Light.Contains(StatusPlant.Light)
+                && Moisture.Contains(StatusPlant.Moisture)
+                && Temperature.Contains(StatusPlant.Temperature);
         }
 
         public bool NeedsWater(int moisture)

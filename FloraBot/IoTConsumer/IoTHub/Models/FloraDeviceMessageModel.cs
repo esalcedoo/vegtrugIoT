@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace IoTConsumer.Models
+namespace IoTConsumer.IoTHub.Models
 {
     public class FloraDeviceMessageModel
     {

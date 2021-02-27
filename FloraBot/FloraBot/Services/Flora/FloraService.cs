@@ -18,9 +18,15 @@ namespace FloraBot.Services.Flora
             _client = client;
         }
 
-        public async Task<List<CurrentStatusPlantModel>> GetPlantsStatus()
+        public async Task<List<StatusPlantModel>> GetPlantsCurrentStatus()
         {
-            List<CurrentStatusPlantModel> plantsStatus = await _client.GetFromJsonAsync<List<CurrentStatusPlantModel>>("currentstatus");
+            List<StatusPlantModel> plantsStatus = await _client.GetFromJsonAsync<List<StatusPlantModel>>("scannow");
+            return plantsStatus;
+        }
+
+        public async Task<List<StatusPlantModel>> GetPlantsStatus()
+        {
+            List<StatusPlantModel> plantsStatus = await _client.GetFromJsonAsync<List<StatusPlantModel>>("status");
             return plantsStatus;
         }
 
@@ -42,5 +48,6 @@ namespace FloraBot.Services.Flora
 
             return new List<PlantModel>();
         }
+    
     }
 }

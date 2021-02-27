@@ -22,10 +22,10 @@ namespace IoTConsumer
 
         [FunctionName("PlantsStatusFunction")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "plants/currentstatus")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "plants/status")] HttpRequest req,
             ILogger log)
         {
-            var status = await _plantService.GetCurrentStatus();
+            var status = await _plantService.GetStatus();
             return new OkObjectResult(status);
         }
     }

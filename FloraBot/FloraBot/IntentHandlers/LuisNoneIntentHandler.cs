@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FloraBot.Services.LUIS
 {
-    public class LuisNoneHandler : ILUISeIntentHandler
+    public class LuisNoneHandler : LUISIntentHandler
     {
         private readonly ConversationState _conversationState;
         private readonly QnADialog _qnADialog;
@@ -19,17 +19,20 @@ namespace FloraBot.Services.LUIS
             _qnADialog = qnADialog;
         }
 
-        public async Task<DialogTurnResult> Handle(DialogContext dialogContext, CancellationToken cancellationToken)
+        public override async Task<DialogTurnResult> Handle(DialogContext dialogContext, CancellationToken cancellationToken)
         {
             return await dialogContext.BeginDialogAsync(_qnADialog.Id, cancellationToken: cancellationToken);
         }
 
-        public async Task Handle(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
+        public override async Task Handle(ITurnContext<IMessageActivity> turnContext, CancellationToken cancellationToken)
         {
             await _qnADialog.RunAsync(turnContext,
                             _conversationState.CreateProperty<DialogState>(nameof(DialogState)), cancellationToken);
         }
 
-        public bool IsValid(string intent) => intent == "None";
+        public override bool IsValid(ITurnContext turnContext)
+        {
+            return GetTopIntentKey(turnContext) == "None";
+        }
     }
 }

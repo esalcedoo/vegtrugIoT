@@ -1,6 +1,5 @@
 ﻿using FloraModels;
 using IoTConsumer.Data;
-using IoTConsumer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,11 +17,11 @@ namespace IoTConsumer.Services
             _context = context;
         }
 
-        public async Task ProcessFloraDeviceMessage(FloraDeviceMessageModel model)
+        public async Task ProcessFloraDeviceMessage(IoTHub.Models.FloraDeviceMessageModel model)
         {
             var floraDevice = await _context.FloraDevices.FindAsync(model.DeviceId);
 
-            if(floraDevice?.PlantId == null)
+            if (floraDevice?.PlantId == null)
             {
                 throw new InvalidOperationException();
             }
@@ -36,6 +35,32 @@ namespace IoTConsumer.Services
                 Moisture = model.Moisture,
                 Temperature = model.Temperature,
                 Timestamp = model.Timestamp,
+                PlantId = floraDevice.PlantId.Value
+            };
+
+            _context.Entries.Add(entry);
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task ProcessFloraDeviceMessage(IoTCentralFunction.Models.FloraDeviceMessageModel model)
+        {
+            var floraDevice = await _context.FloraDevices.FindAsync(model.MessageProperties.MAC);
+
+            if(floraDevice?.PlantId == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            floraDevice.Battery = model.Telemetry.Battery;
+
+            var entry = new EntryEntity
+            {
+                Conductivity = model.Telemetry.Humidity,
+                Light = model.Telemetry.Light,
+                Moisture = model.Telemetry.Fertility,
+                Temperature = model.Telemetry.Temperature,
+                Timestamp = model.EnqueuedTime,
                 PlantId = floraDevice.PlantId.Value
             };
 
@@ -70,7 +95,7 @@ namespace IoTConsumer.Services
             return plantsEntity.Select(plant => plant.ToModel()).ToList();
         }
 
-        public async Task<List<CurrentStatusPlantModel>> GetCurrentStatus()
+        public async Task<List<StatusPlantModel>> GetStatus()
         {
             // TO-DO GroupBy with EFCore 5.0
             List<EntryEntity> entries = await _context.Entries
@@ -79,7 +104,7 @@ namespace IoTConsumer.Services
 
             return entries.GroupBy(entry => entry.PlantId)
                 .Select(gr => gr.OrderByDescending(entry => entry.Timestamp).FirstOrDefault())
-                .Select(entry => new CurrentStatusPlantModel
+                .Select(entry => new StatusPlantModel
                 {
                     Conductivity = entry.Conductivity,
                     Light = entry.Light,
@@ -89,13 +114,5 @@ namespace IoTConsumer.Services
                     Timestamp = entry.Timestamp.Value
                 }).ToList();
         }
-
-        //public async Task<List<CurrentStatusPlantModel>> FindPlantsById(List<int> ids)
-        //{
-        //    var plantsEntity = await _context.Plants
-        //                            .Where(plant => ids.Contains(plant.Id)).ToListAsync();
-
-        //    return plantsEntity.Select(plant => plant.ToModel()).ToList();
-        //}
     }
 }
