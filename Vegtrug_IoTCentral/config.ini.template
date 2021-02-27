@@ -1,5 +1,7 @@
 [macs]
-1 = **Your vegtrug mac**
+Vegtrug_1 = **Your vegtrug mac**
+Vegtrug_2 = **Your vegtrug mac**
+Vegtrug_3 = **Your vegtrug mac**
 [IoTCentral]
 IDScope = **IoT Central Device Scope**
 DeviceId = **IoT Central Device Device ID**

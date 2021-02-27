@@ -1,0 +1,12 @@
+[Unit]
+Description="Mi Flora, Vegtrug plant monitor"
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/pi/dev/Vegtrug/floravenv/bin/python MiFloraMain.py
+WorkingDirectory=/home/pi/dev/Vegtrug/Vegtrug_IoTHub
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
