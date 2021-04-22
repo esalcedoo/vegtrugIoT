@@ -89,8 +89,10 @@ namespace IoTConsumer.Services
 
         public async Task<List<PlantModel>> FindPlantsById(List<int> ids)
         {
-            var plantsEntity = await _context.Plants
-                                    .Where(plant => ids.Contains(plant.Id)).ToListAsync();
+            var kk = await _context.Plants.ToListAsync();
+            var plantsEntity = await _context.FloraDevices.Where(d => d.Active && ids.Contains(d.PlantId.GetValueOrDefault()))
+                .Select(d => d.Plant)
+                .ToListAsync();
 
             return plantsEntity.Select(plant => plant.ToModel()).ToList();
         }
