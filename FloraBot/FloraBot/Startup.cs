@@ -54,9 +54,14 @@ namespace FloraBot
             services.AddQnAService();
 
             // Register sessionize api client
-            services.AddHttpClient<FloraService>(client=>
+            //services.AddHttpClient<FloraService>(client=>
+            //{
+            //    client.BaseAddress = new Uri(Configuration["FloraService:URL"]);
+            //});
+
+            services.AddHttpClient<FloraService>(client =>
             {
-                client.BaseAddress = new Uri(Configuration["FloraService:URL"]);
+                client.BaseAddress = new Uri(Configuration["FloraService:URL"] + Configuration["IoTCentral:device_id"]);
             });
 
             // Add all Dialogs we are gonna use

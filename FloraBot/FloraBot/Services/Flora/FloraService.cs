@@ -5,7 +5,6 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
 
 namespace FloraBot.Services.Flora
 {
@@ -25,8 +24,9 @@ namespace FloraBot.Services.Flora
         }
 
         public async Task<List<StatusPlantModel>> GetPlantsStatus()
-        {
+        {            
             List<StatusPlantModel> plantsStatus = await _client.GetFromJsonAsync<List<StatusPlantModel>>("status");
+
             return plantsStatus;
         }
 
