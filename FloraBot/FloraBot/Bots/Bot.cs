@@ -62,6 +62,17 @@ namespace FloraBot.Bots
             }
         }
 
+        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
+        {
+            foreach (var member in membersAdded)
+            {
+                if (member.Id != turnContext.Activity.Recipient.Id)
+                {
+                    await turnContext.SendActivityAsync(MessageFactory.Text($"Hello!"), cancellationToken);
+                }
+            }
+        }
+
         private DialogSet InitializeDialogSet()
         {
             DialogSet dialogSet = new DialogSet(_conversationState.CreateProperty<DialogState>("DialogState"));
@@ -73,15 +84,5 @@ namespace FloraBot.Bots
             return dialogSet;
         }
 
-        protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
-        {
-            foreach (var member in membersAdded)
-            {
-                if (member.Id != turnContext.Activity.Recipient.Id)
-                {
-                    await turnContext.SendActivityAsync(MessageFactory.Text($"Hello!"), cancellationToken);
-                }
-            }
-        }
     }
 }
