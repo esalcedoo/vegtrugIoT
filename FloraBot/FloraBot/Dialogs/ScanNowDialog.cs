@@ -31,7 +31,7 @@ namespace FloraBot.Dialogs
                 plants = await _floraService.GetPlantsInfo(plantsStatus.Select(plantStatus => plantStatus.PlantId).ToList());
                 tries++;
             }
-            while (!plantsStatus.Any(status => status.Timestamp < DateTime.UtcNow.AddMinutes(-61)) || tries < 2);            
+            while (!plantsStatus.Any(status => status.Timestamp < DateTime.UtcNow) || tries < 3);            
 
             string message = PlantMessages.Summary(plants, plantsStatus);
             
