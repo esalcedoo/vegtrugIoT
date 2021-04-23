@@ -25,13 +25,17 @@ namespace FloraBot.Dialogs
             List<StatusPlantModel> plantsStatus;
             List<PlantModel> plants;
             int tries = 0;
+            bool keepTrying = true;
             do
             {
                 plantsStatus = await _floraService.GetPlantsCurrentStatus();
+                await Task.Delay(5000);
                 plants = await _floraService.GetPlantsInfo(plantsStatus.Select(plantStatus => plantStatus.PlantId).ToList());
+                
                 tries++;
+                keepTrying = plantsStatus.Any(status => status.Timestamp < DateTime.UtcNow.AddMinutes(-1)) && tries < 3;
             }
-            while (!plantsStatus.Any(status => status.Timestamp < DateTime.UtcNow) || tries < 3);            
+            while (keepTrying);            
 
             string message = PlantMessages.Summary(plants, plantsStatus);
             
