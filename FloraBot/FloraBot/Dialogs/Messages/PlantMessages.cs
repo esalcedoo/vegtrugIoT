@@ -27,14 +27,14 @@ namespace FloraBot.Dialogs.Messages
                     {
                         messageParameters.AddOrUpdate(key: "se está inundando la ", plantName: plant.Name);
                     }
-                    if (plant.NeedsMoreLight(plantStatus.Light))
-                    {
-                        messageParameters.AddOrUpdate(key: "necesita más luz la ", plantName: plant.Name);
-                    }
-                    if (plant.IsBurning(plantStatus.Light))
-                    {
-                        messageParameters.AddOrUpdate(key: "se está quemando la ", plantName: plant.Name);
-                    }
+                    //if (plant.NeedsMoreLight(plantStatus.Light))
+                    //{
+                    //    messageParameters.AddOrUpdate(key: "necesita más luz la ", plantName: plant.Name);
+                    //}
+                    //if (plant.IsBurning(plantStatus.Light))
+                    //{
+                    //    messageParameters.AddOrUpdate(key: "se está quemando la ", plantName: plant.Name);
+                    //}
                     if (plant.NeedsFertilizer(plantStatus.Conductivity))
                     {
                         messageParameters.AddOrUpdate(key: "necesita fertilizante la ", plantName: plant.Name);
@@ -43,14 +43,14 @@ namespace FloraBot.Dialogs.Messages
                     {
                         messageParameters.AddOrUpdate(key: "se están quemando las raíces la ", plantName: plant.Name);
                     }
-                    if (plant.IsHot(plantStatus.Temperature))
-                    {
-                        messageParameters.AddOrUpdate(key: "tiene calor la ", plantName: plant.Name);
-                    }
-                    if (plant.IsCold(plantStatus.Temperature))
-                    {
-                        messageParameters.AddOrUpdate(key: "tiene frío la ", plantName: plant.Name);
-                    }
+                    //if (plant.IsHot(plantStatus.Temperature))
+                    //{
+                    //    messageParameters.AddOrUpdate(key: "tiene calor la ", plantName: plant.Name);
+                    //}
+                    //if (plant.IsCold(plantStatus.Temperature))
+                    //{
+                    //    messageParameters.AddOrUpdate(key: "tiene frío la ", plantName: plant.Name);
+                    //}
                 }
             }
 

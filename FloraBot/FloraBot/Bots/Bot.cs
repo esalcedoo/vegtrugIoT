@@ -62,6 +62,31 @@ namespace FloraBot.Bots
             }
         }
 
+        //public class RootDialog : ComponentDialog
+        //{
+        //    private readonly ConversationState _conversationState;
+
+        //    public RootDialog(ConversationState conversationState, WhatToWatchDialog whatToWatchDialog) : base(nameof(RootDialog))
+        //    {
+        //        _conversationState = conversationState;
+        //        AddDialog(new WaterfallDialog(nameof(WaterfallDialog), new WaterfallStep[]
+        //        {
+        //        Redirect
+        //        }));
+        //        AddDialog(whatToWatchDialog);
+        //        InitialDialogId = nameof(WaterfallDialog);
+        //    }
+
+        //    private async Task<DialogTurnResult> Redirect(WaterfallStepContext stepContext, CancellationToken cancellationToken)
+        //    {
+        //        var statePropertyAccessor = _conversationState.CreateProperty<RecognizerResult>(nameof(RecognizerResult));
+        //        var luisRecognizerResult = await statePropertyAccessor.GetAsync(stepContext.Context);
+
+        //        luisRecognizerResult.GetTopScoringIntent().intent;
+        //    }
+        //}
+
+
         protected override async Task OnMembersAddedAsync(IList<ChannelAccount> membersAdded, ITurnContext<IConversationUpdateActivity> turnContext, CancellationToken cancellationToken)
         {
             foreach (var member in membersAdded)
